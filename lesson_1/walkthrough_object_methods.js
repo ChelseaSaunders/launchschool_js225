@@ -1,3 +1,5 @@
+"use strict"
+
 // let me = {
 //   firstName = 'Chelsea',
 //   lastName = 'Saunders',
