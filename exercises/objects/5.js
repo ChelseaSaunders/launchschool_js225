@@ -123,9 +123,29 @@ let school = {
       grades += `${course.name}: ${course.grade || 'In progress'}\n`;
     });
     console.log(grades);
-  }
+  },
 
-}
+  courseReport(courseName) {
+    let studentGrades = [];
+    let grades = [];
+    this.students.forEach((student) => {
+      let studentCourse = student.courses.filter((course) => {
+        return course.name === courseName;
+      }).pop();
+
+      if (studentCourse && studentCourse.grade) {
+        grades.push(studentCourse.grade);
+        studentGrades.push(`${student.name}: ${studentCourse.grade}`);
+      }
+    });
+
+    if (grades.length === 0) return undefined;
+
+    let gradesTotal = grades.reduce((sum, currentGrade) => sum + currentGrade);
+    let average = gradesTotal / grades.length;
+    console.log(`=${courseName} Grades=\n${studentGrades.join('\n')}\n---\nCourse Average: ${average}`)
+  },
+};
 
 let foo = {
   name: 'foo',
@@ -158,12 +178,12 @@ school.addStudent(foo);
 school.addStudent(bar);
 school.addStudent(qux);
 
-school.getReportCard(foo);
+// school.getReportCard(foo);
 // = Math: 95
 // = Advanced Math: 90
 // = Physics: In progress
 
-// school.courseReport('Math');
+school.courseReport('Math');
 // = =Math Grades=
 // = foo: 95
 // = bar: 91
@@ -171,12 +191,12 @@ school.getReportCard(foo);
 // = ---
 // = Course Average: 93
 
-// school.courseReport('Advanced Math');
+school.courseReport('Advanced Math');
 // = =Advanced Math Grades=
 // = foo: 90
 // = qux: 90
 // = ---
 // = Course Average: 90
 
-// school.courseReport('Physics');
+school.courseReport('Physics');
 // = undefined
