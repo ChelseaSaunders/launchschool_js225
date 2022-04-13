@@ -35,6 +35,70 @@
 // Object.prototype, no other method or property should exist on the object
 // returned by the Account prototype object.
 
+// eslint-disable-next-line max-lines-per-function
+let Account = (function() {
+  let userEmail;
+  let userPassword;
+  let userFirstName;
+  let userLastName;
+
+  function validPassword(password) {
+    return password === userPassword;
+  }
+
+  function generateRandomDisplayName() {
+    let possibleChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let randomDisplayName = '';
+    for (let counter = 0; counter < 16; counter += 1) {
+      let index = Math.floor(Math.random() * 62);
+      randomDisplayName += possibleChars[index];
+    }
+    console.log(randomDisplayName);
+    return randomDisplayName;
+  }
+
+  return {
+    init(email, password, firstName, lastName) {
+      userEmail = email;
+      userPassword = password;
+      userFirstName = firstName;
+      userLastName = lastName;
+      this.displayName = generateRandomDisplayName();
+      return this;
+    },
+
+    firstName(password) {
+      return validPassword(password) ? userFirstName : 'Invalid Password';
+    },
+
+    lastName(password) {
+      return validPassword(password) ? userLastName : 'Invalid Password';
+    },
+
+    email(password) {
+      return validPassword(password) ? userEmail : 'Invalid Password';
+    },
+
+    resetPassword(oldPassword, newPassword) {
+      if (validPassword(oldPassword)) {
+        userPassword = newPassword;
+        return true;
+      } else {
+        return 'Invalid Password';
+      }
+    },
+
+    reanonymize(password) {
+      if(validPassword(password)) {
+        this.displayName = generateRandomDisplayName();
+        return true;
+      } else {
+        return 'Invaid Password';
+      }
+    },
+  };
+})();
+
 // Here's a sample for your reference:
 
 let fooBar = Object.create(Account).init('foo@bar.com', '123456', 'foo', 'bar');
@@ -47,6 +111,6 @@ console.log(fooBar.resetPassword('123', 'abc'))    // logs 'Invalid Password';
 console.log(fooBar.resetPassword('123456', 'abc')) // logs true
 
 let displayName = fooBar.displayName;
-fooBar.reanonymize('abc');                         // returns true
+console.log(fooBar.reanonymize('abc'));                         // returns true
 console.log(displayName === fooBar.displayName);   // logs false
 
