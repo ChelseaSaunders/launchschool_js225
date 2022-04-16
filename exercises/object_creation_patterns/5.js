@@ -93,7 +93,7 @@ let ItemManager = {
 
   locateItem(sku) {
     sku = sku.toUpperCase();
-    this.items.findIndex((item) => {
+    return this.items.findIndex((item) => {
       return item.sku === sku;
     });
   },
@@ -101,33 +101,31 @@ let ItemManager = {
   update(sku, itemUpdates) {
     let index = this.locateItem(sku);
     let item = this.items[index];
-    console.log(item)
+
     for (const key in item) {
       if (itemUpdates.key) {
         item.key = itemUpdates.key;
       }
     }
   },
-  // - update: accepts an SKU Code and an object as an argument and updates any
-  // of the information on an item. You may assume valid values will be
-  // provided.
 
   delete(sku) {
     sku = sku.toUpperCase();
     let index = this.locateItem(sku);
     this.items.splice(index, 1);
   },
-  // - accepts SKU Code and deletes the item from the list. assumevalid SKU code
 
   inStock() {
-    return this.items.filter((item) => item.quantity >= 1);
+    return this.items.filter((item) => {
+      return item.quantity >= 1;
+    }, this);
   },
-  // - lists all the items that have a quantity greater than 0.
 
   itemsInCategory(searchCategory) {
-    return this.items.filter((item) => item.category === searchCategory);
+    return this.items.filter((item) => {
+      return item.category === searchCategory;
+    }, this);
   },
-// - itemsInCategory: This method lists all the items for a given category
 };
 
 
@@ -152,6 +150,31 @@ function ItemCreator(name, category, quantity) {
   };
 }
 
+let ReportManager = {
+  init(itemsManagerObject) {
+    this.items = itemsManagerObject;
+    return this;
+  },
+
+  createReporter(sku) {
+    let index = this.items.locateItem(sku);
+    let item = this.items.items[index];
+
+    return {
+      itemInfo() {
+        for (let key in item) {
+          console.log(`${key}: ${item[key]}`);
+        }
+      },
+    };
+  },
+
+  reportInStock() {
+    this.items.inStock().forEach((item) => { console.log(item.name) }, this);
+  },
+};
+
+
 ItemManager.create('basket ball', 'sports', 0);           // valid item
 ItemManager.create('asd', 'sports', 0);
 ItemManager.create('soccer ball', 'sports', 5);           // valid item
@@ -160,31 +183,33 @@ ItemManager.create('football', 'sports', 3);              // valid item
 ItemManager.create('kitchen pot', 'cooking items', 0);
 ItemManager.create('kitchen pot', 'cooking', 3);          // valid item
 
-// console.log('ITEM LIST (4 items):')
-console.log(ItemManager.items);
+ItemManager.items;
 // returns list with the 4 valid items
 
-// ReportManager.init(ItemManager);
+ReportManager.init(ItemManager);
 // ReportManager.reportInStock();
 // logs soccer ball,football,kitchen pot
 
 ItemManager.update('SOCSP', { quantity: 0 });
-// console.log('\nIN STOCK LIST:')
-console.log(ItemManager.inStock());
+console.log('IN STOCK LIST: returns list with the item objects for football and kitchen pot')
+ItemManager.inStock();
 // returns list with the item objects for football and kitchen pot
-// ReportManager.reportInStock();
+
+console.log('\nReports Manager: logs football,kitchen pot ')
+ReportManager.reportInStock();
 // logs football,kitchen pot
-// console.log('\nSPORTS CATEGORY ITEMS:')
-console.log(ItemManager.itemsInCategory('sports'));
+console.log('\nSPORTS CATEGORY ITEMS: objects for basket ball, soccer ball, and football')
+ItemManager.itemsInCategory('sports');
 // returns list with the item objects for basket ball, soccer ball, and football
 ItemManager.delete('SOCSP');
-// console.log('\nUPDATED ITEM LIST (3 items):')
-console.log(ItemManager.items);
+console.log('\nUPDATED ITEM LIST (3 items, no soccer):')
+ItemManager.items;
 // returns list with the remaining 3 valid items (soccer ball is removed from
-the list)
+// the list)
 
 const kitchenPotReporter = ReportManager.createReporter('KITCO');
-kitchenPotReporter.itemInfo();
+// console.log('\nkitchen pot reporter, should log info for kitchwn pot, quant 3')
+// kitchenPotReporter.itemInfo();
 // logs
 // skuCode: KITCO
 // itemName: kitchen pot
@@ -192,6 +217,7 @@ kitchenPotReporter.itemInfo();
 // quantity: 3
 
 ItemManager.update('KITCO', { quantity: 10 });
+console.log('\nkitchen pot reporter, should log info for kitchwn pot, quant 10')
 kitchenPotReporter.itemInfo();
 // logs
 // skuCode: KITCO
