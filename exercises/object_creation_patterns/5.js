@@ -123,7 +123,7 @@ let ItemManager = {
   itemsInCategory(searchCategory) {
     return this.items.filter((item) => {
       return item.category === searchCategory;
-    }, this);
+    });
   },
 };
 
@@ -190,19 +190,18 @@ ReportManager.init(ItemManager);
 // logs soccer ball,football,kitchen pot
 
 // ItemManager.update('SOCSP', { quantity: 0 });
-// console.log('IN STOCK LIST: returns list with the item objects for football and kitchen pot')
+// // console.log('IN STOCK LIST: returns list with the item objects for football and kitchen pot')
 // console.log(ItemManager.inStock());
 // returns list with the item objects for football and kitchen pot
 
-console.log('\nReports Manager: logs football,kitchen pot ')
-ReportManager.reportInStock();
+// console.log('\nReports Manager: logs football,kitchen pot ')
+// ReportManager.reportInStock();
 // logs football,kitchen pot
-console.log('\nSPORTS CATEGORY ITEMS: objects for basket ball, soccer ball, and football')
-ItemManager.itemsInCategory('sports');
+// console.log('\nSPORTS CATEGORY ITEMS: objects for basket ball, soccer ball, and football')
+// console.log(ItemManager.itemsInCategory('sports'));
 // returns list with the item objects for basket ball, soccer ball, and football
-ItemManager.delete('SOCSP');
-console.log('\nUPDATED ITEM LIST (3 items, no soccer):')
-ItemManager.items;
+// ItemManager.delete('SOCSP');
+// console.log(ItemManager.items);
 // returns list with the remaining 3 valid items (soccer ball is removed from
 // the list)
 
