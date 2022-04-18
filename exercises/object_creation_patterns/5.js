@@ -102,11 +102,10 @@ let ItemManager = {
     let index = this.locateItem(sku);
     let item = this.items[index];
 
-    for (let key in item) {
-      if (itemUpdates[key]) {
-        item[key] = itemUpdates[key];
-      }
-    }
+    let keys = Object.keys(itemUpdates);
+    keys.forEach((key) => {
+      item[key] = itemUpdates[key];
+    });
   },
 
   delete(sku) {
@@ -190,9 +189,9 @@ ReportManager.init(ItemManager);
 // ReportManager.reportInStock();
 // logs soccer ball,football,kitchen pot
 
-ItemManager.update('SOCSP', { quantity: 0 });
-console.log('IN STOCK LIST: returns list with the item objects for football and kitchen pot')
-ItemManager.inStock();
+// ItemManager.update('SOCSP', { quantity: 0 });
+// console.log('IN STOCK LIST: returns list with the item objects for football and kitchen pot')
+// console.log(ItemManager.inStock());
 // returns list with the item objects for football and kitchen pot
 
 console.log('\nReports Manager: logs football,kitchen pot ')
@@ -207,7 +206,7 @@ ItemManager.items;
 // returns list with the remaining 3 valid items (soccer ball is removed from
 // the list)
 
-const kitchenPotReporter = ReportManager.createReporter('KITCO');
+// const kitchenPotReporter = ReportManager.createReporter('KITCO');
 // console.log('\nkitchen pot reporter, should log info for kitchwn pot, quant 3')
 // kitchenPotReporter.itemInfo();
 // logs
@@ -217,7 +216,7 @@ const kitchenPotReporter = ReportManager.createReporter('KITCO');
 // quantity: 3
 
 // ItemManager.update('KITCO', { quantity: 10 });
-// console.log('\nkitchen pot reporter, should log info for kitchwn pot, quant 10')
+// console.log('\nkitchen pot reporter, should log info for kitcewn pot, quant 10')
 // kitchenPotReporter.itemInfo();
 // logs
 // skuCode: KITCO
