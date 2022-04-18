@@ -102,9 +102,9 @@ let ItemManager = {
     let index = this.locateItem(sku);
     let item = this.items[index];
 
-    for (const key in item) {
-      if (itemUpdates.key) {
-        item.key = itemUpdates.key;
+    for (let key in item) {
+      if (itemUpdates[key]) {
+        item[key] = itemUpdates[key];
       }
     }
   },
@@ -170,7 +170,7 @@ let ReportManager = {
   },
 
   reportInStock() {
-    this.items.inStock().forEach((item) => { console.log(item.name) }, this);
+    this.items.inStock().forEach((item) => console.log(item.name));
   },
 };
 
@@ -216,9 +216,9 @@ const kitchenPotReporter = ReportManager.createReporter('KITCO');
 // category: cooking
 // quantity: 3
 
-ItemManager.update('KITCO', { quantity: 10 });
-console.log('\nkitchen pot reporter, should log info for kitchwn pot, quant 10')
-kitchenPotReporter.itemInfo();
+// ItemManager.update('KITCO', { quantity: 10 });
+// console.log('\nkitchen pot reporter, should log info for kitchwn pot, quant 10')
+// kitchenPotReporter.itemInfo();
 // logs
 // skuCode: KITCO
 // itemName: kitchen pot
